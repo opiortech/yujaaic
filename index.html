@@ -1,13 +1,25 @@
-<style>
-  body{
-    background: white;
-    font-family: Timew New Roman, serif;
-  }
-  img{
-    height: 5rem;
-    width: 3rem;
-  }
- .header {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPIOR CORP.</title>
+    <style>
+        :root {
+            --accent: #ff9900;
+            --bg-grey: #1e1e1e;
+        }
+
+        body {
+            margin: 0;
+            background: #121212;
+            color: white;
+            font-family: 'Times New Roman', Times, serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Fixed Header */
+        .header {
             position: fixed;
             top: 0;
             left: 0;
@@ -17,7 +29,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 1.5rem;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(7px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 1000;
@@ -27,7 +39,7 @@
         .brand-name {
             font-weight: 800;
             letter-spacing: 0.2rem;
-            font-size: clamp(1.2rem, 5vw, 3rem);
+            font-size: clamp(1.2rem, 5vw, 2.5rem);
             color: var(--accent);
             text-align: center;
             flex-grow: 1;
@@ -43,8 +55,10 @@
             font-size: 2rem;
             cursor: pointer;
             color: var(--accent);
+            user-select: none;
         }
 
+        /* Sliding Side Nav */
         .side-nav {
             height: 100vh;
             width: 0;
@@ -57,149 +71,98 @@
             transition: 0.4s ease;
             display: flex;
             flex-direction: column;
-            padding-top: rem;
-            backdrop-filter: blur(0px);
-            opacity: 96%;
-            
+            padding-top: 2rem;
+            backdrop-filter: blur(5px);
+            box-sizing: border-box;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
         }
 
-        .side-nav.open { width: 280px; }
+        .side-nav.open { 
+            width: 280px; 
+        }
+
         .side-nav a {
             padding: 1rem 2rem;
             text-decoration: none;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: white;
             transition: 0.3s;
-        }
-        .side-nav a:hover { color: var(--accent); }
-
-      
-        .hero {
-            margin-top: 6rem;
-            text-align: center;
-            padding: 4rem 1rem;
-            background: var(--bg-grey);
-            animation: fadeIn 2s ease-in forwards;
+            cursor: pointer;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .side-nav a:hover { 
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-        .hero h1 { margin: 0; font-size: clamp(1.5rem, 6vw, 4rem); color: gray; }
-        .hero .highlight { color: orange; font-size: 1.2em; }
-        .hero .sub-highlight { color: var(--accent); font-weight: bold; }
+        .close-btn {
+            font-size: 2.5rem;
+            text-align: right;
+            padding-right: 1.5rem;
+            color: white;
+            cursor: pointer;
+            line-height: 1;
+        }
 
-        /* --- Roadmap Section --- */
-        .roadmap-container {
-            position: relative;
-            width: 95%;
-            max-width: 600px;
-            margin: 4rem auto;
-            display: flex;
-            flex-direction: column;
-            padding: 0 10px; /* Buffer to prevent border chopping */
-            box-sizing: border-box;
-        } 
-</style>
+        /* Account for fixed header offset during smooth scroll */
+        section {
+            scroll-margin-top: 5rem;
+            padding: 4rem 2rem;
+            min-height: 50vh;
+            border-bottom: 1px solid #333;
+        }
+    </style>
+</head>
 <body>
-  <center>
-   <div id="h">
-<nav class="header" >
-    <img src="symbol.webp" style="height: 3.5rem; width: 3.5rem;" alt="logo">
-    <div class="brand-name">OPIOR CORP.</div>
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-</nav>
-</div>
-<div id="side-menu" class="side-nav">
-    <a href="javascript:void(0)" style="font-size:3rem; text-align:right; padding-right:1rem;" onclick="toggleMenu()">&times;</a>
- <a  onclick="scrollToDiv('h')">Home</a>
-<a onclick="scrollToDiv('hero1')">About</a>
-<a onclick="scrollToDiv('b1')">Services</a>
- <a onclick="scrollToDiv('partners')"> Service Partners</a>
- <a href="bot.html">ChatBot</a>
-  <a onclick="scrollToDiv('work')">Projects </a>
- <a onclick="scrollToDiv('more')"> Motto </a>
- <a  onclick="scrollToDiv('contact')">Contact</a>
-<a onclick="scrollToDiv('FAQs')">FAQs</a>
-</div>
-  </center>
-</body>
-<script>
-    function toggleMenu() {
-        document.getElementById("side-menu").classList.toggle("open");
-    }
 
-    function syncRoadmap() {
-        const path = document.getElementById('snakePath');
-        const container = document.querySelector('.roadmap-container');
-        const circles = document.querySelectorAll('.circle');
-        const rect = container.getBoundingClientRect();
-        
-        let d = "";
+    <!-- Fixed Header Navigation -->
+    <div id="h">
+        <nav class="header">
+            <img src="symbol.webp" style="height: 3.5rem; width: 3.5rem;" alt="logo">
+            <div class="brand-name">OPIOR CORP.</div>
+            <div class="menu-btn" onclick="toggleMenu()">☰</div>
+        </nav>
+    </div>
 
-        circles.forEach((circle, i) => {
-            const cRect = circle.getBoundingClientRect();
-            const x = (cRect.left + cRect.width / 2) - rect.left;
-            const y = (cRect.top + cRect.height / 2) - rect.top;
+    <!-- Side Menu Drawer -->
+    <div id="side-menu" class="side-nav">
+        <span class="close-btn" onclick="toggleMenu()">&times;</span>
+        <a onclick="scrollToDiv('h')">Home</a>
+        <a onclick="scrollToDiv('hero1')">About</a>
+        <a onclick="scrollToDiv('b1')">Services</a>
+        <a onclick="scrollToDiv('partners')">Service Partners</a>
+        <a href="bot.html">ChatBot</a>
+        <a onclick="scrollToDiv('work')">Projects</a>
+        <a onclick="scrollToDiv('more')">Motto</a>
+        <a onclick="scrollToDiv('contact')">Contact</a>
+        <a onclick="scrollToDiv('FAQs')">FAQs</a>
+    </div>
 
-            if (i === 0) {
-                d += `M ${x} ${y}`;
-            } else {
-                const prevRect = circles[i-1].getBoundingClientRect();
-                const prevY = (prevRect.top + prevRect.height / 2) - rect.top;
-                const midY = (prevY + y) / 2;
-                
-                // Swing logic: Curve moves to container edges
-                const isMobile = window.innerWidth < 768;
-                const swingOffset = isMobile ? 20 : 80; 
-                const controlX = (x > (rect.width / 2)) ? rect.width + swingOffset : -swingOffset;
+    <!-- Target Sections (Placeholders) -->
+    <section id="hero1"><h2>About</h2></section>
+    <section id="b1"><h2>Services</h2></section>
+    <section id="partners"><h2>Service Partners</h2></section>
+    <section id="work"><h2>Projects</h2></section>
+    <section id="more"><h2>Motto</h2></section>
+    <section id="contact"><h2>Contact</h2></section>
+    <section id="FAQs"><h2>FAQs</h2></section>
 
-                d += ` C ${controlX} ${midY}, ${controlX} ${midY}, ${x} ${y}`;
+    <script>
+        function toggleMenu() {
+            document.getElementById("side-menu").classList.toggle("open");
+        }
+
+        function scrollToDiv(id) {
+            const target = document.getElementById(id);
+            if (target) {
+                target.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                // Auto-close navigation drawer after link click
+                document.getElementById("side-menu").classList.remove("open");
             }
-        });
-        path.setAttribute('d', d);
-    }
-
-    window.addEventListener('load', () => setTimeout(syncRoadmap, 200));
-    window.addEventListener('resize', syncRoadmap);
-    function scrollToDiv(id) {
-  document.getElementById(id).scrollIntoView({ 
-    behavior: 'smooth',
-    block: 'start'  // 'start', 'center', 'end', or 'nearest'
-  });
-}
-</script>
- <script>
-
-const revealElements =
-document.querySelectorAll('.reveal');
-
-const observer =
-new IntersectionObserver(
-
-(entries)=>{
-
-  entries.forEach((entry)=>{
-
-    if(entry.isIntersecting){
-
-      entry.target.classList.add('active');
-
-    }
-
-  });
-
-},
-
-{
-  threshold:0.15
-}
-
-);
-
-revealElements.forEach((element)=>{
-
-  observer.observe(element);
-
-});
-
-</script>
+        }
+    </script>
+</body>
+</html>

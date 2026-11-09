@@ -123,3 +123,48 @@
 </div>
   </center>
 </body>
+<script>
+    function toggleMenu() {
+        document.getElementById("side-menu").classList.toggle("open");
+    }
+
+    function syncRoadmap() {
+        const path = document.getElementById('snakePath');
+        const container = document.querySelector('.roadmap-container');
+        const circles = document.querySelectorAll('.circle');
+        const rect = container.getBoundingClientRect();
+        
+        let d = "";
+
+        circles.forEach((circle, i) => {
+            const cRect = circle.getBoundingClientRect();
+            const x = (cRect.left + cRect.width / 2) - rect.left;
+            const y = (cRect.top + cRect.height / 2) - rect.top;
+
+            if (i === 0) {
+                d += `M ${x} ${y}`;
+            } else {
+                const prevRect = circles[i-1].getBoundingClientRect();
+                const prevY = (prevRect.top + prevRect.height / 2) - rect.top;
+                const midY = (prevY + y) / 2;
+                
+                // Swing logic: Curve moves to container edges
+                const isMobile = window.innerWidth < 768;
+                const swingOffset = isMobile ? 20 : 80; 
+                const controlX = (x > (rect.width / 2)) ? rect.width + swingOffset : -swingOffset;
+
+                d += ` C ${controlX} ${midY}, ${controlX} ${midY}, ${x} ${y}`;
+            }
+        });
+        path.setAttribute('d', d);
+    }
+
+    window.addEventListener('load', () => setTimeout(syncRoadmap, 200));
+    window.addEventListener('resize', syncRoadmap);
+    function scrollToDiv(id) {
+  document.getElementById(id).scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'  // 'start', 'center', 'end', or 'nearest'
+  });
+}
+</script>

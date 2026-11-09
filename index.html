@@ -7,9 +7,119 @@
     height: 5rem;
     width: 3rem;
   }
+ .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(7px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .brand-name {
+            font-weight: 800;
+            letter-spacing: 0.2rem;
+            font-size: clamp(1.2rem, 5vw, 3rem);
+            color: var(--accent);
+            text-align: center;
+            flex-grow: 1;
+            animation: blurIn 1s ease-out forwards;
+        }
+
+        @keyframes blurIn {
+            0% { opacity: 0; filter: blur(20px); transform: scale(0.9); }
+            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+
+        .menu-btn {
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .side-nav {
+            height: 100vh;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            right: 0;
+            background-color: var(--bg-grey);
+            overflow-x: hidden;
+            transition: 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            padding-top: rem;
+            backdrop-filter: blur(0px);
+            opacity: 96%;
+            
+        }
+
+        .side-nav.open { width: 280px; }
+        .side-nav a {
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-size: 1.5rem;
+            color: white;
+            transition: 0.3s;
+        }
+        .side-nav a:hover { color: var(--accent); }
+
+      
+        .hero {
+            margin-top: 6rem;
+            text-align: center;
+            padding: 4rem 1rem;
+            background: var(--bg-grey);
+            animation: fadeIn 2s ease-in forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .hero h1 { margin: 0; font-size: clamp(1.5rem, 6vw, 4rem); color: gray; }
+        .hero .highlight { color: orange; font-size: 1.2em; }
+        .hero .sub-highlight { color: var(--accent); font-weight: bold; }
+
+        /* --- Roadmap Section --- */
+        .roadmap-container {
+            position: relative;
+            width: 95%;
+            max-width: 600px;
+            margin: 4rem auto;
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px; /* Buffer to prevent border chopping */
+            box-sizing: border-box;
+        } 
 </style>
 <body>
   <center>
-    <h1> YUJAAIC </h1>
+   <div id="h">
+<nav class="header" >
+    <img src="symbol.webp" style="height: 3.5rem; width: 3.5rem;" alt="logo">
+    <div class="brand-name">OPIOR CORP.</div>
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+</nav>
+</div>
+<div id="side-menu" class="side-nav">
+    <a href="javascript:void(0)" style="font-size:3rem; text-align:right; padding-right:1rem;" onclick="toggleMenu()">&times;</a>
+ <a  onclick="scrollToDiv('h')">Home</a>
+<a onclick="scrollToDiv('hero1')">About</a>
+<a onclick="scrollToDiv('b1')">Services</a>
+ <a onclick="scrollToDiv('partners')"> Service Partners</a>
+ <a href="bot.html">ChatBot</a>
+  <a onclick="scrollToDiv('work')">Projects </a>
+ <a onclick="scrollToDiv('more')"> Motto </a>
+ <a  onclick="scrollToDiv('contact')">Contact</a>
+<a onclick="scrollToDiv('FAQs')">FAQs</a>
+</div>
   </center>
 </body>
